@@ -1,8 +1,10 @@
+import { Header } from "./components/layout/general/Header"
+
 function App() {
 
   return (
     <div className="layout">
-      <h1>social network with react</h1>
+      <Header />
     </div>
   )
 }
