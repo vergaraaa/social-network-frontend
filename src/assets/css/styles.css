@@ -55,7 +55,7 @@ body {
 .layout{
     display: grid;
     grid-template-areas: 
-        "nav nav " 
+        "nav nav" 
         "content aside";
     grid-template-rows: 8% auto auto;
     grid-template-columns: 70% 30%;
@@ -278,7 +278,6 @@ body {
 .layout__aside{
     grid-area: aside;
     margin-right: 2rem;
-    
 }
 
 .aside__container{
