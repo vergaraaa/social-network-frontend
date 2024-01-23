@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
 
     const [auth, setAuth] = useState({});
     const [stats, setStats] = useState({});
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         authUser();
@@ -46,6 +47,7 @@ export const AuthProvider = ({ children }) => {
 
         setAuth(data.user);
         setStats(dataCounters);
+        setLoading(false);
     }
 
     return (
@@ -53,6 +55,7 @@ export const AuthProvider = ({ children }) => {
             auth,
             setAuth,
             stats,
+            loading
         }}>
             {children}
         </AuthContext.Provider>
