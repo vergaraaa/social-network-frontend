@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import avatar from '../../assets/img/user.png'
 import { Global } from '../../helpers/Global';
+import { SerializeForm } from '../../helpers/SerializeForm';
 
 
 export const Settings = () => {
@@ -12,7 +13,11 @@ export const Settings = () => {
   const saveSettings = async (e) => {
     e.preventDefault();
 
-    console.log(auth);
+    const newUserData = SerializeForm(e.target);
+
+    delete newUserData.file;
+
+
   }
 
   return (
@@ -25,7 +30,7 @@ export const Settings = () => {
         {status === "success" && <strong className='alert alert-success'>User registered successfully</strong>}
         {status === "failure" && <strong className='alert alert-danger'>{message}</strong>}
 
-        <form className='register-form' onSubmit={saveSettings}>
+        <form className='settings-form' onSubmit={saveSettings}>
           <div className="form-group">
             <label htmlFor="name">Name</label>
             <input type="text" name="name" defaultValue={auth.name} />
