@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
 import { useForm } from '../../hooks/useForm';
 import { Global } from '../../helpers/Global';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 
 export const Login = () => {
+    const { setAuth } = useAuth();
+
     const { form, changed } = useForm();
     const [status, setStatus] = useState("pure");
     const [message, setMessage] = useState("");
@@ -27,6 +31,13 @@ export const Login = () => {
 
             localStorage.setItem("token", data.token);
             localStorage.setItem("user", JSON.stringify(data.user));
+
+
+            setTimeout(() => {
+                setAuth(data.user);
+
+                window.location.reload();
+            }, 1000);
         }
         else {
             setStatus("failure");
