@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useForm } from '../../hooks/useForm';
 import { Global } from '../../helpers/Global';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 
 export const Login = () => {
