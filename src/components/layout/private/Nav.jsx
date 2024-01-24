@@ -50,12 +50,12 @@ export const Nav = () => {
                         <span className="list-end__name">Settings</span>
                     </NavLink>
                 </li>
-                <NavLink to="/social/logout" className="list-end__item">
-                    <a href="#" className="list-end__link">
+                <li className="list-end__item">
+                    <NavLink to="/social/logout" className="list-end__link">
                         <i className='fa-solid fa-arrow-right-from-bracket'></i>
                         <span className="list-end__name">Logout</span>
-                    </a>
-                </NavLink>
+                    </NavLink>
+                </li>
             </ul>
         </nav>
     )
