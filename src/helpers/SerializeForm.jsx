@@ -5,7 +5,6 @@ export const SerializeForm = (form) => {
 
     for (let [name, value] of formData) {
         completeObj[name] = value;
-        console.log(name, value);
     }
 
     return completeObj

@@ -6,7 +6,8 @@ import { SerializeForm } from '../../helpers/SerializeForm';
 
 
 export const Settings = () => {
-  const { auth } = useAuth();
+
+  const { auth, setAuth } = useAuth();
   const [status, setStatus] = useState("pure");
   const [message, setMessage] = useState("");
 
@@ -17,7 +18,25 @@ export const Settings = () => {
 
     delete newUserData.file;
 
+    const request = await fetch(Global.url + "/users/" + auth.id, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": localStorage.getItem("token")
+      },
+      body: JSON.stringify(newUserData),
+    });
 
+    const data = await request.json();
+
+    if (data.status === "success") {
+      setAuth(data.user);
+      setStatus("success");
+    }
+    else {
+      setStatus("failure");
+      setMessage(data.message)
+    }
   }
 
   return (
@@ -27,7 +46,7 @@ export const Settings = () => {
       </header>
 
       <div className="content__posts">
-        {status === "success" && <strong className='alert alert-success'>User registered successfully</strong>}
+        {status === "success" && <strong className='alert alert-success'>User updated successfully</strong>}
         {status === "failure" && <strong className='alert alert-danger'>{message}</strong>}
 
         <form className='settings-form' onSubmit={saveSettings}>
