@@ -14,6 +14,8 @@ export const Settings = () => {
   const saveSettings = async (e) => {
     e.preventDefault();
 
+    const token = localStorage.getItem("token");
+
     const newUserData = SerializeForm(e.target);
 
     delete newUserData.file;
@@ -22,7 +24,7 @@ export const Settings = () => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": localStorage.getItem("token")
+        "Authorization": token
       },
       body: JSON.stringify(newUserData),
     });
@@ -35,7 +37,33 @@ export const Settings = () => {
     }
     else {
       setStatus("failure");
-      setMessage(data.message)
+      setMessage(data.message);
+    }
+
+    const fileInput = document.querySelector("#file");
+
+    if (data.status === "success" && fileInput.files[0]) {
+      const formData = new FormData();
+      formData.append("file", fileInput.files[0]);
+
+      const requestImage = await fetch(Global.url + "/users/upload-image", {
+        method: "POST",
+        headers: {
+          "Authorization": token
+        },
+        body: formData,
+      });
+
+      const dataImage = await requestImage.json();
+
+      if (dataImage.status === "success" && dataImage.user) {
+        setAuth(dataImage.user);
+        setStatus("success");
+      }
+      else {
+        setStatus("failure");
+        setMessage(data.message)
+      }
     }
   }
 
@@ -89,7 +117,7 @@ export const Settings = () => {
               </div>
             </div>
             <br />
-            <input type="file" name="file" />
+            <input type="file" name="file" id='file' />
           </div>
 
           <br />
