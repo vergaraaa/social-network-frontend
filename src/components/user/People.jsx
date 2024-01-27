@@ -5,6 +5,7 @@ export const People = () => {
 
     const [users, setUsers] = useState([]);
     const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
 
     const getUsers = async () => {
         const request = await fetch(Global.url + "/users/list/" + page, {
@@ -17,8 +18,16 @@ export const People = () => {
 
         const data = await request.json();
 
+        console.log(data);
+
         if (data.users && data.status === "success") {
-            setUsers([...users, ...data.users]);
+            let newUsers = [...users, ...data.users];
+
+            setUsers(newUsers);
+
+            if (newUsers.length >= data.total) {
+                setHasMore(false);
+            }
         }
     };
 
@@ -80,11 +89,15 @@ export const People = () => {
                 }
             </div>
 
-            <div className="content__container-btn">
-                <button className="content__btn-more-post" onClick={nextPage}>
-                    More people
-                </button>
-            </div>
+            {
+                hasMore && (
+                    <div className="content__container-btn">
+                        <button className="content__btn-more-post" onClick={nextPage}>
+                            More people
+                        </button>
+                    </div>
+                )
+            }
         </>
     )
 }
