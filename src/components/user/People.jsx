@@ -4,9 +4,10 @@ import { Global } from '../../helpers/Global'
 export const People = () => {
 
     const [users, setUsers] = useState([]);
+    const [page, setPage] = useState(1);
 
     const getUsers = async () => {
-        const request = await fetch(Global.url + "/users/list/1", {
+        const request = await fetch(Global.url + "/users/list/" + page, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -17,15 +18,18 @@ export const People = () => {
         const data = await request.json();
 
         if (data.users && data.status === "success") {
-            setUsers(data.users);
+            setUsers([...users, ...data.users]);
         }
     };
 
+    const nextPage = () => {
+        let next = page + 1;
+        setPage(next);
+    }
+
     useEffect(() => {
         getUsers();
-    }, [])
-
-
+    }, [page]);
 
     return (
         <>
@@ -51,6 +55,8 @@ export const People = () => {
                                         <div className="post__user-info">
                                             <a href="#" className="user-info__name">{user.name} {user.lastname}</a>
                                             <span className="user-info__divider"> | </span>
+                                            <a href="#" className="user-info__create-date">{user.username}</a>
+                                            <span className="user-info__divider"> | </span>
                                             <a href="#" className="user-info__create-date">{user.created_at}</a>
                                         </div>
 
@@ -75,7 +81,7 @@ export const People = () => {
             </div>
 
             <div className="content__container-btn">
-                <button className="content__btn-more-post">
+                <button className="content__btn-more-post" onClick={nextPage}>
                     More people
                 </button>
             </div>
