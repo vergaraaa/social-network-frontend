@@ -3,11 +3,14 @@ import avatar from '../../assets/img/user.png'
 import { Global } from '../../helpers/Global'
 export const People = () => {
 
-    const [users, setUsers] = useState([]);
     const [page, setPage] = useState(1);
+    const [users, setUsers] = useState([]);
     const [hasMore, setHasMore] = useState(true);
+    const [loading, setLoading] = useState(true);
 
     const getUsers = async () => {
+        setLoading(true);
+
         const request = await fetch(Global.url + "/users/list/" + page, {
             method: "GET",
             headers: {
@@ -18,7 +21,6 @@ export const People = () => {
 
         const data = await request.json();
 
-        console.log(data);
 
         if (data.users && data.status === "success") {
             let newUsers = [...users, ...data.users];
@@ -29,6 +31,8 @@ export const People = () => {
                 setHasMore(false);
             }
         }
+
+        setLoading(false);
     };
 
     const nextPage = () => {
@@ -88,6 +92,8 @@ export const People = () => {
                     })
                 }
             </div>
+
+            {loading && <h3>Loading...</h3>}
 
             {
                 hasMore && (
