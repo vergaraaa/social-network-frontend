@@ -11,7 +11,7 @@ export const People = () => {
     const [loading, setLoading] = useState(true);
     const [following, setFollowing] = useState([]);
 
-    const { stats, setStats } = useAuth();
+    const { auth, stats, setStats } = useAuth();
 
     const getUsers = async () => {
         setLoading(true);
@@ -128,18 +128,21 @@ export const People = () => {
                                     </div>
                                 </div>
 
-                                <div className="post__buttons">
-                                    {
-                                        !following.includes(user.id)
-                                            ? <button onClick={() => follow(user.id)} className="post__button post__button--green">
-                                                Follow
-                                            </button>
-                                            : <button onClick={() => unfollow(user.id)} className="post__button">
-                                                Unfollow
-                                            </button>
-                                    }
+                                {
+                                    auth.id !== user.id &&
+                                    <div className="post__buttons">
+                                        {
+                                            !following.includes(user.id)
+                                                ? <button onClick={() => follow(user.id)} className="post__button post__button--green">
+                                                    Follow
+                                                </button>
+                                                : <button onClick={() => unfollow(user.id)} className="post__button">
+                                                    Unfollow
+                                                </button>
+                                        }
 
-                                </div>
+                                    </div>
+                                }
                             </article>
 
                         )
