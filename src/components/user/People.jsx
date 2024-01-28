@@ -7,6 +7,7 @@ export const People = () => {
     const [users, setUsers] = useState([]);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(true);
+    const [following, setFollowing] = useState([]);
 
     const getUsers = async () => {
         setLoading(true);
@@ -26,6 +27,7 @@ export const People = () => {
             let newUsers = [...users, ...data.users];
 
             setUsers(newUsers);
+            setFollowing(data.userFollowing);
 
             if (newUsers.length >= data.total) {
                 setHasMore(false);
@@ -78,13 +80,16 @@ export const People = () => {
                                 </div>
 
                                 <div className="post__buttons">
-                                    <a href="#" className="post__button post__button--green">
-                                        Follow
-                                    </a>
+                                    {
+                                        !following.includes(user.id)
+                                            ? <a href="#" className="post__button post__button--green">
+                                                Follow
+                                            </a>
+                                            : <a href="#" className="post__button">
+                                                Unfollow
+                                            </a>
+                                    }
 
-                                    {/* <a href="#" className="post__button">
-                                        Unfollow
-                                    </a> */}
                                 </div>
                             </article>
 
