@@ -31,14 +31,14 @@ export const Sidebar = () => {
                         <div className="stats__following">
                             <a href="#" className="following__link">
                                 <span className="following__title">Siguiendo</span>
-                                <span className="following__number">{stats.followed}</span>
+                                <span className="following__number">{stats.following}</span>
                             </a>
                         </div>
 
                         <div className="stats__following">
                             <a href="#" className="following__link">
                                 <span className="following__title">Seguidores</span>
-                                <span className="following__number">{stats.following}</span>
+                                <span className="following__number">{stats.followed}</span>
                             </a>
                         </div>
 

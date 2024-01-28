@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import avatar from '../../assets/img/user.png'
 import { Global } from '../../helpers/Global'
+import { useAuth } from '../../hooks/useAuth'
+
 export const People = () => {
 
     const [page, setPage] = useState(1);
@@ -8,6 +10,8 @@ export const People = () => {
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(true);
     const [following, setFollowing] = useState([]);
+
+    const { stats, setStats } = useAuth();
 
     const getUsers = async () => {
         setLoading(true);
@@ -40,6 +44,51 @@ export const People = () => {
     const nextPage = () => {
         let next = page + 1;
         setPage(next);
+    }
+
+    const follow = async (userId) => {
+        const request = await fetch(Global.url + "/follows/save", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token"),
+            },
+            body: JSON.stringify({ followed: userId })
+        });
+
+        const data = await request.json();
+
+        if (data.status === "success") {
+            setFollowing([...following, userId]);
+
+            setStats({
+                ...stats,
+                following: stats.following + 1
+            });
+        }
+    }
+
+    const unfollow = async (userId) => {
+        const request = await fetch(Global.url + "/follows/unfollow/" + userId, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token"),
+            },
+        });
+
+        const data = await request.json();
+
+        if (data.status === "success") {
+            let newFollowing = following.filter(follow => follow !== userId);
+
+            setFollowing(newFollowing);
+
+            setStats({
+                ...stats,
+                following: stats.following - 1
+            });
+        }
     }
 
     useEffect(() => {
@@ -82,12 +131,12 @@ export const People = () => {
                                 <div className="post__buttons">
                                     {
                                         !following.includes(user.id)
-                                            ? <a href="#" className="post__button post__button--green">
+                                            ? <button onClick={() => follow(user.id)} className="post__button post__button--green">
                                                 Follow
-                                            </a>
-                                            : <a href="#" className="post__button">
+                                            </button>
+                                            : <button onClick={() => unfollow(user.id)} className="post__button">
                                                 Unfollow
-                                            </a>
+                                            </button>
                                     }
 
                                 </div>
