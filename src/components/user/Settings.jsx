@@ -20,7 +20,7 @@ export const Settings = () => {
 
     delete newUserData.file;
 
-    const request = await fetch(Global.url + "/users/" + auth.id, {
+    const request = await fetch(Global.url + "/users/" + auth._id, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

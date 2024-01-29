@@ -12,7 +12,7 @@ export const PublicLayout = () => {
 
             <section className="layout__content">
                 {
-                    !auth.id
+                    !auth._id
                         ? <Outlet />
                         : <Navigate to="/social" />
                 }

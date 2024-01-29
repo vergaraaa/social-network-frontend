@@ -17,7 +17,7 @@ export const PrivateLayout = () => {
 
             <section className="layout__content">
                 {
-                    auth.id
+                    auth._id
                         ? <Outlet />
                         : <Navigate to="/login" />
                 }

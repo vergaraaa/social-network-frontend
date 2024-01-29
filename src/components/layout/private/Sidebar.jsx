@@ -2,6 +2,7 @@ import React from 'react'
 import avatar from '../../../assets/img/user.png'
 import { useAuth } from '../../../hooks/useAuth'
 import { Global } from '../../../helpers/Global';
+import { Link } from 'react-router-dom';
 
 export const Sidebar = () => {
 
@@ -29,17 +30,17 @@ export const Sidebar = () => {
 
                     <div className="profile-info__stats">
                         <div className="stats__following">
-                            <a href="#" className="following__link">
+                            <Link to={"/social/following/" + auth._id} className="following__link">
                                 <span className="following__title">Siguiendo</span>
                                 <span className="following__number">{stats.following}</span>
-                            </a>
+                            </Link>
                         </div>
 
                         <div className="stats__following">
-                            <a href="#" className="following__link">
+                            <Link to={"/social/following/" + auth._id} className="following__link">
                                 <span className="following__title">Seguidores</span>
                                 <span className="following__number">{stats.followed}</span>
-                            </a>
+                            </Link>
                         </div>
 
                         <div className="stats__following">

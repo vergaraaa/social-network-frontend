@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
         }
 
         const userObj = JSON.parse(user);
-        const userId = userObj.id;
+        const userId = userObj._id;
 
         const request = await fetch(Global.url + "/users/" + userId, {
             method: "GET",

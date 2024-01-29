@@ -63,7 +63,7 @@ export const UserList = ({ users, following, setFollowing, loading, hasMore, pag
                 {
                     users.map(user => {
                         return (
-                            <article key={user.id} className="posts__post">
+                            <article key={user._id} className="posts__post">
                                 <div className="post__container">
                                     <div className="post__image-user">
                                         <a href="#" className="post__image-link">
@@ -87,14 +87,14 @@ export const UserList = ({ users, following, setFollowing, loading, hasMore, pag
                                 </div>
 
                                 {
-                                    auth.id !== user.id &&
+                                    auth._id !== user._id &&
                                     <div className="post__buttons">
                                         {
-                                            !following.includes(user.id)
-                                                ? <button onClick={() => follow(user.id)} className="post__button post__button--green">
+                                            !following.includes(user._id)
+                                                ? <button onClick={() => follow(user._id)} className="post__button post__button--green">
                                                     Follow
                                                 </button>
-                                                : <button onClick={() => unfollow(user.id)} className="post__button">
+                                                : <button onClick={() => unfollow(user._id)} className="post__button">
                                                     Unfollow
                                                 </button>
                                         }
