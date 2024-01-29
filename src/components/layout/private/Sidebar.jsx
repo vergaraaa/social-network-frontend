@@ -31,21 +31,21 @@ export const Sidebar = () => {
                     <div className="profile-info__stats">
                         <div className="stats__following">
                             <Link to={"/social/following/" + auth._id} className="following__link">
-                                <span className="following__title">Siguiendo</span>
+                                <span className="following__title">Following</span>
                                 <span className="following__number">{stats.following}</span>
                             </Link>
                         </div>
 
                         <div className="stats__following">
-                            <Link to={"/social/following/" + auth._id} className="following__link">
-                                <span className="following__title">Seguidores</span>
+                            <Link to={"/social/followers/" + auth._id} className="following__link">
+                                <span className="following__title">Followers</span>
                                 <span className="following__number">{stats.followed}</span>
                             </Link>
                         </div>
 
                         <div className="stats__following">
                             <a href="#" className="following__link">
-                                <span className="following__title">Publicaciones</span>
+                                <span className="following__title">Posts</span>
                                 <span className="following__number">{stats.posts}</span>
                             </a>
                         </div>

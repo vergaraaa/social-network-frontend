@@ -39,8 +39,6 @@ export const Following = () => {
             let newUsers = [...users, ...data.users];
 
             setUsers(newUsers);
-            console.log(newUsers[0]._id)
-            console.log(data.userFollowing);
             setFollowing(data.userFollowing);
 
             if (newUsers.length >= data.total) {
@@ -71,8 +69,6 @@ export const Following = () => {
                 page={page}
                 setPage={setPage}
             />
-
-
         </>
     )
 }

@@ -57,8 +57,6 @@ export const People = () => {
                 page={page}
                 setPage={setPage}
             />
-
-
         </>
     )
 }
