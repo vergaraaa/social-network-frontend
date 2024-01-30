@@ -1,12 +1,48 @@
-import React from 'react'
-import avatar from '../../../assets/img/user.png'
-import { useAuth } from '../../../hooks/useAuth'
-import { Global } from '../../../helpers/Global';
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../../hooks/useAuth'
+import { Global } from '../../../helpers/Global'
+import { useForm } from '../../../hooks/useForm'
+import avatar from '../../../assets/img/user.png'
 
 export const Sidebar = () => {
 
-    const { auth, stats } = useAuth();
+    const { auth, stats, setStats } = useAuth();
+    const { form, changed } = useForm({});
+    const [message, setMessage] = useState("");
+    const [status, setStatus] = useState('pure');
+
+
+    const savePost = async (e) => {
+        e.preventDefault();
+
+        let newPost = form;
+        newPost.user = auth._id;
+
+        const request = await fetch(Global.url + "/posts/create", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token"),
+            },
+            body: JSON.stringify(newPost),
+        });
+
+        const data = await request.json();
+
+        if (data.status === "success") {
+            setStatus("success");
+
+            setStats({
+                ...stats,
+                posts: stats.posts + 1
+            });
+        }
+        else {
+            setStatus("failure");
+            setMessage(data.message);
+        }
+    }
 
     return (
         <aside className="layout__aside">
@@ -54,18 +90,21 @@ export const Sidebar = () => {
 
 
                 <div className="aside__container-form">
-                    <form className="container-form__form-post">
+                    {status === "success" && <strong className='alert alert-success'>Post uploaded successfully</strong>}
+                    {status === "failure" && <strong className='alert alert-danger'>{message}</strong>}
+
+                    <form className="container-form__form-post" onSubmit={savePost}>
                         <div className="form-post__inputs">
-                            <label htmlFor="post" className="form-post__label">¿Que estas pesando hoy?</label>
-                            <textarea name="post" className="form-post__textarea"></textarea>
+                            <label htmlFor="text" className="form-post__label">¿Whats on your mind today?</label>
+                            <textarea name="text" className="form-post__textarea" onChange={changed} />
                         </div>
 
                         <div className="form-post__inputs">
-                            <label htmlFor="image" className="form-post__label">Sube tu foto</label>
-                            <input type="file" name="image" className="form-post__image" />
+                            <label htmlFor="file" className="form-post__label">Sube tu foto</label>
+                            <input type="file" name="file" className="form-post__image" />
                         </div>
 
-                        <input type="submit" value="Enviar" className="form-post__btn-submit" disabled />
+                        <input type="submit" value="Upload" className="form-post__btn-submit" />
                     </form>
                 </div>
             </div>
