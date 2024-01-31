@@ -19,11 +19,13 @@ export const Sidebar = () => {
         let newPost = form;
         newPost.user = auth._id;
 
+        const token = localStorage.getItem("token");
+
         const request = await fetch(Global.url + "/posts/create", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": localStorage.getItem("token"),
+                "Authorization": token,
             },
             body: JSON.stringify(newPost),
         });
@@ -41,6 +43,32 @@ export const Sidebar = () => {
         else {
             setStatus("failure");
             setMessage(data.message);
+        }
+
+        // upload image
+        const fileInput = document.querySelector("#file");
+
+        if (data.status === "success" && fileInput.files[0]) {
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+
+            const uploadRequest = await fetch(Global.url + "/posts/upload-image/" + data.post._id, {
+                method: "POST",
+                headers: {
+                    "Authorization": token,
+                },
+                body: formData
+            });
+
+            const uploadData = await uploadRequest.json()
+
+            if (uploadData.status === "success") {
+                setStatus("success");
+            }
+            else {
+                setStatus("failure");
+                setMessage(uploadData.message);
+            }
         }
     }
 
@@ -101,7 +129,7 @@ export const Sidebar = () => {
 
                         <div className="form-post__inputs">
                             <label htmlFor="file" className="form-post__label">Sube tu foto</label>
-                            <input type="file" name="file" className="form-post__image" />
+                            <input type="file" id='file' name="file" className="form-post__image" />
                         </div>
 
                         <input type="submit" value="Upload" className="form-post__btn-submit" />
