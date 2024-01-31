@@ -64,10 +64,17 @@ export const Sidebar = () => {
 
             if (uploadData.status === "success") {
                 setStatus("success");
+
+
             }
             else {
                 setStatus("failure");
                 setMessage(uploadData.message);
+            }
+
+            if (data.status === "success" && uploadData.status === "success") {
+                const form = document.querySelector("#post-form");
+                form.reset();
             }
         }
     }
@@ -121,7 +128,7 @@ export const Sidebar = () => {
                     {status === "success" && <strong className='alert alert-success'>Post uploaded successfully</strong>}
                     {status === "failure" && <strong className='alert alert-danger'>{message}</strong>}
 
-                    <form className="container-form__form-post" onSubmit={savePost}>
+                    <form id='post-form' className="container-form__form-post" onSubmit={savePost}>
                         <div className="form-post__inputs">
                             <label htmlFor="text" className="form-post__label">¿Whats on your mind today?</label>
                             <textarea name="text" className="form-post__textarea" onChange={changed} />
