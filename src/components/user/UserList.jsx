@@ -2,6 +2,7 @@ import React from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import { Global } from '../../helpers/Global'
 import avatar from '../../assets/img/user.png'
+import { Link } from 'react-router-dom'
 
 export const UserList = ({ users, following, setFollowing, loading, hasMore, page, setPage }) => {
 
@@ -66,20 +67,20 @@ export const UserList = ({ users, following, setFollowing, loading, hasMore, pag
                             <article key={user._id} className="posts__post">
                                 <div className="post__container">
                                     <div className="post__image-user">
-                                        <a href="#" className="post__image-link">
+                                        <Link to={'/social/profile/' + user._id} className="post__image-link">
                                             {user.image !== "default.png" && <img src={Global.url + "/users/image/" + user.image} className="post__user-image" alt="Foto de perfil" />}
                                             {user.image === "default.png" && <img src={avatar} className="post__user-image" alt="Foto de perfil" />}
-                                        </a>
+                                        </Link>
                                     </div>
 
                                     <div className="post__body">
 
                                         <div className="post__user-info">
-                                            <a href="#" className="user-info__name">{user.name} {user.lastname}</a>
+                                            <Link to={'/social/profile/' + user._id} className="user-info__name">{user.name} {user.lastname}</Link>
                                             <span className="user-info__divider"> | </span>
-                                            <a href="#" className="user-info__create-date">{user.username}</a>
+                                            <Link to={'/social/profile/' + user._id} className="user-info__create-date">{user.username}</Link>
                                             <span className="user-info__divider"> | </span>
-                                            <a href="#" className="user-info__create-date">{user.created_at}</a>
+                                            <Link to={'/social/profile/' + user._id} className="user-info__create-date">{user.created_at}</Link>
                                         </div>
 
                                         <h4 className="post__content">{user.bio}</h4>

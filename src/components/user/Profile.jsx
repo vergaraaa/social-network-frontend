@@ -1,30 +1,34 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { Global } from '../../helpers/Global'
 import avatar from '../../assets/img/user.png'
 import { Link, useParams } from 'react-router-dom'
-import { Global } from '../../helpers/Global'
+import { GetProfile } from '../../helpers/GetProfile'
 
 export const Profile = () => {
     const { userId } = useParams();
+    const [user, setUser] = useState({});
+
+    useEffect(() => {
+        GetProfile(userId, setUser);
+    }, []);
+
 
     return (
         <>
             <header className="aside__profile-info">
                 <div className="profile-info__general-info">
                     <div className="general-info__container-avatar">
-                        <img src={avatar} className="container-avatar__img" alt="Foto de perfil" />
-                        {/* {auth.image !== "default.png" && <img src={Global.url + "/users/image/" + auth.image} className="container-avatar__img" alt="Foto de perfil" />}
-                            {auth.image === "default.png" && <img src={avatar} className="container-avatar__img" alt="Foto de perfil" />} */}
+                        {user.image !== "default.png" && <img src={Global.url + "/users/image/" + user.image} className="container-avatar__img" alt="Foto de perfil" />}
+                        {user.image === "default.png" && <img src={avatar} className="container-avatar__img" alt="Foto de perfil" />}
                     </div>
 
                     <div className="general-info__container-names">
                         <p>
-                            <h1 className="content__title">user name</h1>
+                            <h1 className="content__title">{user.name} {user.lastname}</h1>
                             <button className="content__button content__button--right">Follow</button>
                         </p>
-                        {/* <Link to={'/social/profile/' + auth._id} className="container-names__name">{auth.name} {auth.lastname}</Link> */}
-                        {/* <p className="container-names__nickname">{auth.username}</p> */}
-                        <h2 className="container-names__nickname">auth.username</h2>
-                        <p className="container-names__nickname">auth.bio</p>
+                        <Link to={'/social/profile/' + user._id} className="container-names__name">{user.username}</Link>
+                        <p className="container-names__nickname">{user.bio}</p>
                     </div>
                 </div>
 
