@@ -121,7 +121,6 @@ export const Sidebar = () => {
                     </div>
                 </div>
 
-
                 <div className="aside__container-form">
                     {status === "success" && <strong className='alert alert-success'>Post uploaded successfully</strong>}
                     {status === "failure" && <strong className='alert alert-danger'>{message}</strong>}
