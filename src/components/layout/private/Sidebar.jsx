@@ -64,8 +64,6 @@ export const Sidebar = () => {
 
             if (uploadData.status === "success") {
                 setStatus("success");
-
-
             }
             else {
                 setStatus("failure");
@@ -94,7 +92,7 @@ export const Sidebar = () => {
                         </div>
 
                         <div className="general-info__container-names">
-                            <a href="#" className="container-names__name">{auth.name} {auth.lastname}</a>
+                            <Link to={'/social/profile/' + auth._id} className="container-names__name">{auth.name} {auth.lastname}</Link>
                             <p className="container-names__nickname">{auth.username}</p>
                         </div>
                     </div>
@@ -115,10 +113,10 @@ export const Sidebar = () => {
                         </div>
 
                         <div className="stats__following">
-                            <a href="#" className="following__link">
+                            <Link to={'/social/profile/' + auth._id} className="following__link">
                                 <span className="following__title">Posts</span>
                                 <span className="following__number">{stats.posts}</span>
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>

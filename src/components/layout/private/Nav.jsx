@@ -40,9 +40,9 @@ export const Nav = () => {
                     </a>
                 </li>
                 <li className="list-end__item">
-                    <a href="#" className="list-end__link">
+                    <NavLink to={'/social/profile/' + auth._id} className="list-end__link">
                         <span className="list-end__name">{auth.username}</span>
-                    </a>
+                    </NavLink>
                 </li>
                 <li className="list-end__item">
                     <NavLink to="/social/settings" className="list-end__link">
