@@ -6,11 +6,39 @@ import { GetProfile } from '../../helpers/GetProfile'
 
 export const Profile = () => {
     const { userId } = useParams();
+
     const [user, setUser] = useState({});
+    const [stats, setStats] = useState({});
+
+    const getCounters = async () => {
+        const request = await fetch(Global.url + '/users/stats/' + userId, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token"),
+            },
+        });
+
+        const data = await request.json();
+
+        if (data.status === "success") {
+            setStats({
+                followed: data.followed,
+                following: data.following,
+                posts: data.posts,
+            });
+        }
+    }
 
     useEffect(() => {
         GetProfile(userId, setUser);
+        getCounters();
     }, []);
+
+    useEffect(() => {
+        GetProfile(userId, setUser);
+        getCounters();
+    }, [userId]);
 
 
     return (
@@ -36,21 +64,21 @@ export const Profile = () => {
                     <div className="stats__following">
                         <Link to={"/social/following/" + userId} className="following__link">
                             <span className="following__title">Following</span>
-                            {/* <span className="following__number">{stats.following}</span> */}
+                            <span className="following__number">{stats.following}</span>
                         </Link>
                     </div>
 
                     <div className="stats__following">
                         <Link to={"/social/followers/" + userId} className="following__link">
                             <span className="following__title">Followers</span>
-                            {/* <span className="following__number">{stats.followed}</span> */}
+                            <span className="following__number">{stats.followed}</span>
                         </Link>
                     </div>
 
                     <div className="stats__following">
                         <Link to={'/social/profile/' + userId} className="following__link">
                             <span className="following__title">Posts</span>
-                            {/* <span className="following__number">{stats.posts}</span> */}
+                            <span className="following__number">{stats.posts}</span>
                         </Link>
                     </div>
                 </div>
