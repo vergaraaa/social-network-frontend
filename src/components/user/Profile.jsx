@@ -253,6 +253,10 @@ export const Profile = () => {
                                         </div>
 
                                         <h4 className="post__content">{post.text}</h4>
+
+                                        {
+                                            post.file && <img src={Global.url + "/posts/image/" + post.file} />
+                                        }
                                     </div>
                                 </div>
 
