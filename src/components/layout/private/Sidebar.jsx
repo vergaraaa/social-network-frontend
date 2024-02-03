@@ -70,7 +70,7 @@ export const Sidebar = () => {
                 setMessage(uploadData.message);
             }
 
-            if (data.status === "success" && uploadData.status === "success") {
+            if (data.status === "success" || (data.status === "success" && uploadData.status === "success")) {
                 const form = document.querySelector("#post-form");
                 form.reset();
             }

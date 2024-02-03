@@ -10,7 +10,14 @@ export const Feed = () => {
     const [posts, setPosts] = useState([]);
     const [hasMore, setHasMore] = useState(true);
 
-    const getPosts = async (next) => {
+    const getPosts = async (next, showNews = false) => {
+        if (showNews) {
+            setPosts([]);
+            setPage(1);
+            setHasMore(true);
+            next = 1;
+        }
+
         const request = await fetch(Global.url + '/posts/feed/' + next, {
             method: "GET",
             headers: {
@@ -22,7 +29,14 @@ export const Feed = () => {
         const data = await request.json();
 
         if (data.status === "success") {
-            let newPosts = [...posts, ...data.posts];
+            var newPosts = [];
+
+            if (showNews) {
+                newPosts = [...data.posts];
+            }
+            else {
+                newPosts = [...posts, ...data.posts];
+            }
 
             setPosts(newPosts);
 
@@ -36,16 +50,19 @@ export const Feed = () => {
         }
     }
 
-    useEffect(() => {
-        getPosts();
-    }, []);
+    const getNews = async () => {
+        await getPosts(1, true);
+    }
 
+    useEffect(() => {
+        getPosts(1, false);
+    }, []);
 
     return (
         <>
             <header className="content__header">
                 <h1 className="content__title">Timeline</h1>
-                <button className="content__button">Mostrar nuevas</button>
+                <button className="content__button" onClick={getNews}>Show news</button>
             </header>
 
             <PostList
