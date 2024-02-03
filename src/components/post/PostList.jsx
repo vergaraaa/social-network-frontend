@@ -60,17 +60,17 @@ export const PostList = ({
                             <article key={post._id} className="posts__post">
                                 <div className="post__container">
                                     <div className="post__image-user">
-                                        <Link to={'/social/profile/' + user._id} className="post__image-link">
-                                            {user.image !== "default.png" && <img src={Global.url + "/users/image/" + user.image} className="post__user-image" alt="Foto de perfil" />}
-                                            {user.image === "default.png" && <img src={avatar} className="post__user-image" alt="Foto de perfil" />}
+                                        <Link to={'/social/profile/' + post.user._id} className="post__image-link">
+                                            {post.user.image !== "default.png" && <img src={Global.url + "/users/image/" + post.user.image} className="post__user-image" alt="Foto de perfil" />}
+                                            {post.user.image === "default.png" && <img src={avatar} className="post__user-image" alt="Foto de perfil" />}
                                         </Link>
                                     </div>
                                     <div className="post__body">
 
                                         <div className="post__user-info">
-                                            <Link to={'/social/profile/' + user._id} className="user-info__name">{user.name} {user.lastname}</Link>
+                                            <Link to={'/social/profile/' + post.user._id} className="user-info__name">{post.user.name} {post.user.lastname}</Link>
                                             <span className="user-info__divider"> | </span>
-                                            <Link to={'/social/profile/' + user._id} className="user-info__create-date">Hace 1 hora</Link>
+                                            <Link to={'/social/profile/' + post.user._id} className="user-info__create-date">Hace 1 hora</Link>
                                         </div>
 
                                         <h4 className="post__content">{post.text}</h4>

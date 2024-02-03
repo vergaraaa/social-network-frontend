@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import { PostList } from '../post/PostList'
 import { useAuth } from '../../hooks/useAuth'
 import { Global } from '../../helpers/Global'
 import avatar from '../../assets/img/user.png'
 import { Link, useParams } from 'react-router-dom'
 import { GetProfile } from '../../helpers/GetProfile'
-import { PostList } from '../post/PostList'
 
 export const Profile = () => {
     const { userId } = useParams();
@@ -130,7 +130,6 @@ export const Profile = () => {
             if (data.pages <= 1) {
                 setHasMore(false);
             }
-
         }
     }
 
