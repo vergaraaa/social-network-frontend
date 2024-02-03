@@ -124,8 +124,40 @@ export const Profile = () => {
 
             if (newPosts.length >= data.total) {
                 setHasMore(false);
-
             }
+
+            if (data.pages <= 1) {
+                setHasMore(false);
+            }
+
+        }
+    }
+
+    const deletePost = async (postId) => {
+        const request = await fetch(Global.url + '/posts/delete/' + postId, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token"),
+            },
+        });
+
+        const data = await request.json();
+
+        if (data.status === "success") {
+            setPage(1);
+            setHasMore(true);
+            await getPosts(1, true);
+
+            setStats({
+                ...stats,
+                posts: stats.posts - 1
+            });
+
+            setUserStats({
+                ...userStats,
+                posts: userStats.posts - 1,
+            });
         }
     }
 
@@ -227,9 +259,9 @@ export const Profile = () => {
                                 {
                                     auth._id === post.user._id &&
                                     <div className="post__buttons">
-                                        <a href="#" className="post__button">
+                                        <button onClick={() => deletePost(post._id)} className="post__button">
                                             <i className="fa-solid fa-trash-can"></i>
-                                        </a>
+                                        </button>
                                     </div>
                                 }
                             </article>
