@@ -6,11 +6,11 @@ import { Link, useParams } from 'react-router-dom'
 import { GetProfile } from '../../helpers/GetProfile'
 
 export const Profile = () => {
-    const { auth } = useAuth();
+    const { auth, stats, setStats } = useAuth();
     const { userId } = useParams();
 
     const [user, setUser] = useState({});
-    const [stats, setStats] = useState({});
+    const [userStats, setUserStats] = useState({});
     const [iFollow, setIFollow] = useState(false);
 
     const getCounters = async () => {
@@ -25,7 +25,7 @@ export const Profile = () => {
         const data = await request.json();
 
         if (data.status === "success") {
-            setStats({
+            setUserStats({
                 followed: data.followed,
                 following: data.following,
                 posts: data.posts,
@@ -36,10 +36,61 @@ export const Profile = () => {
     const getDataUser = async () => {
         let dataUser = await GetProfile(userId, setUser);
 
-        console.log(dataUser);
-
         if (dataUser.following && dataUser.following._id) {
             setIFollow(true);
+        }
+    }
+
+    const follow = async () => {
+        const request = await fetch(Global.url + "/follows/save", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token"),
+            },
+            body: JSON.stringify({ followed: userId })
+        });
+
+        const data = await request.json();
+
+        if (data.status === "success") {
+            setIFollow(true);
+
+            setStats({
+                ...stats,
+                following: stats.following + 1
+            });
+
+            setUserStats({
+                ...userStats,
+                followed: userStats.followed + 1,
+            });
+        }
+    }
+
+    const unfollow = async () => {
+        const request = await fetch(Global.url + "/follows/unfollow/" + userId, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token"),
+            },
+        });
+
+        const data = await request.json();
+
+        if (data.status === "success") {
+            setIFollow(false);
+
+            setStats({
+                ...stats,
+                following: stats.following - 1
+            });
+
+            setUserStats({
+                ...userStats,
+                followed: userStats.followed - 1,
+            });
         }
     }
 
@@ -70,8 +121,8 @@ export const Profile = () => {
                                 userId !== auth._id &&
                                 (
                                     iFollow
-                                        ? <button className="content__button content__button--right post__button">Unfollow</button>
-                                        : <button className="content__button content__button--right">Follow</button>
+                                        ? <button className="content__button content__button--right post__button" onClick={unfollow}>Unfollow</button>
+                                        : <button className="content__button content__button--right" onClick={follow}>Follow</button>
                                 )
                             }
                         </p>
@@ -84,21 +135,21 @@ export const Profile = () => {
                     <div className="stats__following">
                         <Link to={"/social/following/" + userId} className="following__link">
                             <span className="following__title">Following</span>
-                            <span className="following__number">{stats.following}</span>
+                            <span className="following__number">{userStats.following}</span>
                         </Link>
                     </div>
 
                     <div className="stats__following">
                         <Link to={"/social/followers/" + userId} className="following__link">
                             <span className="following__title">Followers</span>
-                            <span className="following__number">{stats.followed}</span>
+                            <span className="following__number">{userStats.followed}</span>
                         </Link>
                     </div>
 
                     <div className="stats__following">
                         <Link to={'/social/profile/' + userId} className="following__link">
                             <span className="following__title">Posts</span>
-                            <span className="following__number">{stats.posts}</span>
+                            <span className="following__number">{userStats.posts}</span>
                         </Link>
                     </div>
                 </div>
