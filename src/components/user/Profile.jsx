@@ -9,8 +9,10 @@ export const Profile = () => {
     const { userId } = useParams();
     const { auth, stats, setStats } = useAuth();
 
+    const [page, setPage] = useState(1);
     const [user, setUser] = useState({});
     const [posts, setPosts] = useState([]);
+    const [hasMore, setHasMore] = useState(true);
     const [iFollow, setIFollow] = useState(false);
     const [userStats, setUserStats] = useState({});
 
@@ -108,8 +110,20 @@ export const Profile = () => {
         const data = await request.json();
 
         if (data.status === "success") {
-            setPosts(data.posts);
+            let newPosts = [...posts, ...data.posts];
+
+            setPosts(newPosts);
+
+            if (newPosts.length >= data.total) {
+                setHasMore(false);
+            }
         }
+    }
+
+    const nextPage = () => {
+        let next = page + 1;
+        setPage(next);
+        getPosts(next);
     }
 
     useEffect(() => {
@@ -214,11 +228,15 @@ export const Profile = () => {
                 }
             </div>
 
-            <div className="content__container-btn">
-                <button className="content__btn-more-post">
-                    Ver mas publicaciones
-                </button>
-            </div>
+            {
+                hasMore && (
+                    <div className="content__container-btn">
+                        <button className="content__btn-more-post" onClick={nextPage}>
+                            Show more posts
+                        </button>
+                    </div>
+                )
+            }
         </>
     )
 }
