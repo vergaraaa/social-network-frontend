@@ -112,7 +112,11 @@ export const Profile = () => {
         if (data.status === "success") {
             let newPosts = data.posts;
 
-            if (!newProfile) {
+            if (newProfile) {
+                setHasMore(true);
+                setPage(1);
+            }
+            else {
                 newPosts = [...posts, ...data.posts];
             }
 
@@ -120,6 +124,7 @@ export const Profile = () => {
 
             if (newPosts.length >= data.total) {
                 setHasMore(false);
+
             }
         }
     }
@@ -139,6 +144,7 @@ export const Profile = () => {
     useEffect(() => {
         getDataUser();
         getCounters();
+        setHasMore(true);
         getPosts(1, true);
     }, [userId]);
 
