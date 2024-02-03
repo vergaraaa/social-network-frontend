@@ -98,7 +98,7 @@ export const Profile = () => {
         }
     }
 
-    const getPosts = async (nextPage = 1) => {
+    const getPosts = async (nextPage = 1, newProfile = false) => {
         const request = await fetch(Global.url + '/posts/user/' + userId + '/' + nextPage, {
             method: "GET",
             headers: {
@@ -110,7 +110,11 @@ export const Profile = () => {
         const data = await request.json();
 
         if (data.status === "success") {
-            let newPosts = [...posts, ...data.posts];
+            let newPosts = data.posts;
+
+            if (!newProfile) {
+                newPosts = [...posts, ...data.posts];
+            }
 
             setPosts(newPosts);
 
@@ -129,13 +133,13 @@ export const Profile = () => {
     useEffect(() => {
         getDataUser();
         getCounters();
-        getPosts();
+        getPosts(1, true);
     }, []);
 
     useEffect(() => {
         getDataUser();
         getCounters();
-        getPosts();
+        getPosts(1, true);
     }, [userId]);
 
 
