@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
+import { useAuth } from '../../hooks/useAuth'
 import { Global } from '../../helpers/Global'
 import avatar from '../../assets/img/user.png'
 import { Link, useParams } from 'react-router-dom'
 import { GetProfile } from '../../helpers/GetProfile'
 
 export const Profile = () => {
+    const { auth } = useAuth();
     const { userId } = useParams();
 
     const [user, setUser] = useState({});
     const [stats, setStats] = useState({});
+    const [iFollow, setIFollow] = useState(false);
 
     const getCounters = async () => {
         const request = await fetch(Global.url + '/users/stats/' + userId, {
@@ -30,13 +33,23 @@ export const Profile = () => {
         }
     }
 
+    const getDataUser = async () => {
+        let dataUser = await GetProfile(userId, setUser);
+
+        console.log(dataUser);
+
+        if (dataUser.following && dataUser.following._id) {
+            setIFollow(true);
+        }
+    }
+
     useEffect(() => {
-        GetProfile(userId, setUser);
+        getDataUser();
         getCounters();
     }, []);
 
     useEffect(() => {
-        GetProfile(userId, setUser);
+        getDataUser();
         getCounters();
     }, [userId]);
 
@@ -53,7 +66,14 @@ export const Profile = () => {
                     <div className="general-info__container-names">
                         <p>
                             <h1 className="content__title">{user.name} {user.lastname}</h1>
-                            <button className="content__button content__button--right">Follow</button>
+                            {
+                                userId !== auth._id &&
+                                (
+                                    iFollow
+                                        ? <button className="content__button content__button--right post__button">Unfollow</button>
+                                        : <button className="content__button content__button--right">Follow</button>
+                                )
+                            }
                         </p>
                         <Link to={'/social/profile/' + user._id} className="container-names__name">{user.username}</Link>
                         <p className="container-names__nickname">{user.bio}</p>
