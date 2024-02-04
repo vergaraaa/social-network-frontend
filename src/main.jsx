@@ -7,6 +7,13 @@ import './assets/css/normalize.css'
 import './assets/css/styles.css'
 import './assets/css/responsive.css'
 
+import TimeAgo from 'javascript-time-ago'
+
+import en from 'javascript-time-ago/locale/en.json'
+
+TimeAgo.addDefaultLocale(en)
+TimeAgo.addLocale(en)
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   // <React.StrictMode>
   <App />

@@ -1,8 +1,9 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+import ReactTimeAgo from 'react-time-ago'
 import { useAuth } from '../../hooks/useAuth'
 import { Global } from '../../helpers/Global'
 import avatar from '../../assets/img/user.png'
-import { Link } from 'react-router-dom'
 
 export const PostList = ({
     posts,
@@ -70,7 +71,9 @@ export const PostList = ({
                                         <div className="post__user-info">
                                             <Link to={'/social/profile/' + post.user._id} className="user-info__name">{post.user.name} {post.user.lastname}</Link>
                                             <span className="user-info__divider"> | </span>
-                                            <Link to={'/social/profile/' + post.user._id} className="user-info__create-date">Hace 1 hora</Link>
+                                            <Link to={'/social/profile/' + post.user._id} className="user-info__create-date">
+                                                <ReactTimeAgo date={parseInt(post.created_at)} locale='en-EN' />
+                                            </Link>
                                         </div>
 
                                         <h4 className="post__content">{post.text}</h4>

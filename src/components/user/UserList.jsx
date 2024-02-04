@@ -3,6 +3,7 @@ import { useAuth } from '../../hooks/useAuth'
 import { Global } from '../../helpers/Global'
 import avatar from '../../assets/img/user.png'
 import { Link } from 'react-router-dom'
+import ReactTimeAgo from 'react-time-ago'
 
 export const UserList = ({ users, following, setFollowing, loading, hasMore, page, setPage }) => {
 
@@ -80,7 +81,9 @@ export const UserList = ({ users, following, setFollowing, loading, hasMore, pag
                                             <span className="user-info__divider"> | </span>
                                             <Link to={'/social/profile/' + user._id} className="user-info__create-date">{user.username}</Link>
                                             <span className="user-info__divider"> | </span>
-                                            <Link to={'/social/profile/' + user._id} className="user-info__create-date">{user.created_at}</Link>
+                                            <Link to={'/social/profile/' + user._id} className="user-info__create-date">
+                                                <ReactTimeAgo date={user.created_at} locale='en-EN' />
+                                            </Link>
                                         </div>
 
                                         <h4 className="post__content">{user.bio}</h4>
